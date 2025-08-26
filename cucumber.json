@@ -1,0 +1,21 @@
+{
+  "default": {
+    "requireModule": ["ts-node/register", "tsconfig-paths/register"],
+    "require": [
+      "tests/steps/**/*.ts",
+      "src/support/hooks.ts",
+      "src/support/world.ts"
+    ],
+    "paths": ["tests/features/**/*.feature"],
+    "format": [
+      "progress-bar",
+      "html:test-results/cucumber-report.html",
+      "json:test-results/cucumber-report.json"
+    ],
+    "formatOptions": {
+      "snippetInterface": "async-await"
+    },
+    "dryRun": false,
+    "parallel": 2
+  }
+}
