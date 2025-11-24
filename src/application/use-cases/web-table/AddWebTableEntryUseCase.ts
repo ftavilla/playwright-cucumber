@@ -11,9 +11,16 @@ interface WebTableEntry {
 
 export const ADD_WEBTABLE_ENTRY_USE_CASE_TOKEN = Symbol('AddWebTableEntryUseCase');
 
+/**
+ * Use case to add entries to the web table
+ */
 export class AddWebTableEntryUseCase {
   constructor(private page: any) {}
 
+  /**
+   * Executes the process of adding a new entry to the web table
+   * @param data - Entry data to add
+   */
   async execute(data: {
     firstName: string;
     lastName: string;
@@ -33,6 +40,10 @@ export class AddWebTableEntryUseCase {
     if (!rowExists) throw new Error('Entry not found in the table');
   }
 
+  /**
+   * Retrieves all row data from the table
+   * @returns Array of row data
+   */
   async getRowData(): Promise<string[][]> {
     const rows = await this.page.locator('.rt-tbody .rt-tr-group');
 

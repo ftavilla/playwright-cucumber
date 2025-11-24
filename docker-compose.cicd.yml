@@ -1,0 +1,29 @@
+# Docker Compose configuration for CI/CD environments
+# Uses external Vault (INT, STA, PRE-PROD, etc.) - no local Vault initialization
+
+version: '3.8'
+
+services:
+  playwright-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: playwright-cucumber-tests-cicd
+    volumes:
+      - ./test-results:/app/test-results
+      - ./tests:/app/tests
+      - ./src:/app/src
+    environment:
+      - CI=true
+      # Environment name (INT, STA, PRE-PROD, etc.)
+      - ENV=${ENV:-INT}
+      - NODE_ENV=production
+      # Vault configuration - these should be provided by CI/CD secrets
+      - VAULT_ADDR=${VAULT_ADDR}
+      - VAULT_TOKEN=${VAULT_TOKEN}
+      - VAULT_SECRET_PATH=${VAULT_SECRET_PATH:-secret/data/test-users}
+      # Skip local Vault initialization in CI/CD
+      - SKIP_VAULT_INIT=true
+    shm_size: 2gb
+    command: npm test
+

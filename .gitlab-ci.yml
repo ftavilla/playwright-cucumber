@@ -1,0 +1,45 @@
+# GitLab CI/CD configuration for Playwright Cucumber tests
+
+stages:
+  - test
+  - report
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+test:
+  stage: test
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker info
+  script:
+    - docker-compose up --build --abort-on-container-exit
+  artifacts:
+    when: always
+    paths:
+      - test-results/
+    expire_in: 30 days
+  only:
+    - main
+    - develop
+    - merge_requests
+
+report:
+  stage: report
+  image: alpine:latest
+  dependencies:
+    - test
+  script:
+    - echo "Test results available in artifacts"
+  artifacts:
+    when: always
+    paths:
+      - test-results/cucumber-report.html
+    expire_in: 30 days
+  only:
+    - main
+    - develop
+

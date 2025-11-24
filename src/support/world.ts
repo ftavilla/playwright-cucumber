@@ -1,6 +1,7 @@
 import { Page } from '@playwright/test';
 import { IWorldOptions, setWorldConstructor, World } from '@cucumber/cucumber';
 import { UseCase } from '../domain/usecases/UseCase';
+import { getVaultService } from '../infrastructure/vault/VaultService';
 
 export class CustomWorld extends World {
     page!: Page;
@@ -20,6 +21,19 @@ export class CustomWorld extends World {
             throw new Error(`UseCase with key "${key}" not found`);
         }
         return useCase as T;
+    }
+
+    /**
+     * Retrieves credentials directly from Vault without storing them in memory
+     * @param userId - The user identifier to fetch credentials for
+     * @returns The user credentials from Vault
+     */
+    async getCredentialsFromVault(userId: string) {
+        const vaultService = getVaultService();
+        if (!vaultService.isConnected()) {
+            await vaultService.initialize();
+        }
+        return await vaultService.getTestUserCredentials(userId);
     }
 }
 

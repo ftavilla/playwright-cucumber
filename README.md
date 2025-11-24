@@ -177,6 +177,38 @@ The ability to use multiple **use cases** in a single **scenario** provides maxi
     * Although business logic is decoupled, UI interactions are still tied to the page objects. Significant UI changes may require updates to page objects and use cases.
 
 
+## Docker Support
+
+This project is fully dockerized for easy deployment and consistent test execution across different environments.
+
+### Quick Start with Docker
+
+```bash
+# Using npm scripts
+npm run test:docker
+
+# Using Make
+make test
+
+# Using docker-compose directly
+docker-compose up --build
+```
+
+### Available Docker Commands
+
+- `npm run test:docker` - Run tests in Docker container (headless)
+- `npm run test:headed` - Run tests in UI mode (UI-MODE.md)
+- `npm run test:docker:rebuild` - Rebuild and run tests
+- `npm run docker:build` - Build Docker image only
+- `npm run docker:clean` - Clean Docker resources
+
+### Next Steps
+
+- ✅ **Dockerization** - Complete
+- ✅ **UI Mode** - VNC support for visual debugging
+- ✅ **Vault Integration** - For test user authentication management
+- ⏳ **Microcks Integration** - For test data management
+
 ## Conclusion
 
 This architecture provides a robust, flexible, and scalable approach to BDD testing. By separating business logic, UI interactions, and test setup, it ensures that the test suite remains maintainable and adaptable to changes. The `CustomWorld` enables flexible use case management, improving test organization and reusability. While the initial setup may be more complex, the long-term benefits in terms of maintainability, scalability, and test clarity are significant.

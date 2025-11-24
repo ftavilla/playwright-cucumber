@@ -8,7 +8,7 @@
     ],
     "paths": ["tests/features/**/*.feature"],
     "format": [
-      "progress-bar",
+      "progress",
       "html:test-results/cucumber-report.html",
       "json:test-results/cucumber-report.json"
     ],
@@ -16,6 +16,6 @@
       "snippetInterface": "async-await"
     },
     "dryRun": false,
-    "parallel": 2
+    "parallel": 1
   }
 }

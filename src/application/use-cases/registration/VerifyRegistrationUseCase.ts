@@ -1,5 +1,8 @@
 import { Page } from '@playwright/test';
 
+/**
+ * Use case to verify registration confirmation
+ */
 export class VerifyRegistrationUseCase {
     private page: Page;
 
@@ -7,9 +10,12 @@ export class VerifyRegistrationUseCase {
         this.page = page;
     }
 
+    /**
+     * Verifies the registration confirmation message
+     * @returns The confirmation message text
+     */
     async execute(): Promise<String> {
         const confirmationMessage = await this.page.locator('.modal-body');
-
         const textContent = await confirmationMessage.innerText();
 
         if (!textContent.includes('John Doe')) {

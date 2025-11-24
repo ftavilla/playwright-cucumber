@@ -1,3 +1,6 @@
+/**
+ * Page Object for the file upload functionality
+ */
 export class UploadPage {
   constructor(private page: any) {}
 

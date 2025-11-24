@@ -1,3 +1,6 @@
+/**
+ * Page Object for the registration form
+ */
 export class RegistrationPage {
   constructor(private page: any) {}
 

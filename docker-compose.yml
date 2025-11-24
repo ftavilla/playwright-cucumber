@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # Service Vault pour la gestion sécurisée des credentials
+  vault:
+    image: hashicorp/vault:latest
+    container_name: playwright-vault
+    ports:
+      - "8200:8200"
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: dev-only-token
+      VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
+      VAULT_ADDR: http://127.0.0.1:8200
+    cap_add:
+      - IPC_LOCK
+    networks:
+      - test-network
+    healthcheck:
+      test: ["CMD", "vault", "status", "-address=http://127.0.0.1:8200"]
+      interval: 3s
+      timeout: 2s
+      retries: 30
+      start_period: 10s
+    command: server -dev -dev-root-token-id=dev-only-token
+
+  playwright-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: playwright-cucumber-tests
+    volumes:
+      - ./test-results:/app/test-results
+      - ./tests:/app/tests
+      - ./src:/app/src
+      - ./scripts:/app/scripts
+    environment:
+      - CI=true
+      - NODE_ENV=test
+      - VAULT_ADDR=http://vault:8200
+      - VAULT_TOKEN=dev-only-token
+      - VAULT_SECRET_PATH=secret/data/test-users
+    networks:
+      - test-network
+    depends_on:
+      vault:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "/app/scripts/docker-entrypoint.sh"]
+    shm_size: 2gb
+
+networks:
+  test-network:
+    driver: bridge
+

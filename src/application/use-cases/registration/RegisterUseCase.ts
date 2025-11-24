@@ -2,9 +2,16 @@ import { RegistrationPage } from '../../../infrastructure/playwright/pages/Regis
 
 export const REGISTER_USE_CASE_TOKEN = Symbol('RegisterUseCase');
 
+/**
+ * Use case to handle user registration
+ */
 export class RegisterUseCase {
   constructor(private page: any) {}
 
+  /**
+   * Executes the registration process
+   * @param data - User registration data
+   */
   async execute(data: {
     firstName: string;
     lastName: string;

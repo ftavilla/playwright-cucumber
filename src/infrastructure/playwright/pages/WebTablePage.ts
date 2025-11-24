@@ -1,3 +1,6 @@
+/**
+ * Page Object for the web table functionality
+ */
 export class WebTablePage {
   constructor(private page: any) {}
 
